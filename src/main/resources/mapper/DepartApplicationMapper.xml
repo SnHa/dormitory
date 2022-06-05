@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atsun.dormitory.dao.DepartApplicationMapper">
+    <resultMap id="BaseResultMap" type="com.atsun.dormitory.po.DepartApplication">
+        <!--@mbg.generated-->
+        <!--@Table depart_application-->
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="apply_user_id" jdbcType="VARCHAR" property="applyUserId"/>
+        <result column="reason" jdbcType="VARCHAR" property="reason"/>
+        <result column="time" jdbcType="TIMESTAMP" property="time"/>
+        <result column="student_id" jdbcType="VARCHAR" property="studentId"/>
+    </resultMap>
+    <resultMap id="baseMap" type="com.atsun.dormitory.vo.DepartApplicationVO">
+        <id column="id" property="id"></id>
+        <result column="apply_user_id" property="applyUserId"></result>
+        <result column="reason" property="reason"></result>
+        <result column="time" property="time"></result>
+        <result column="student_id" property="studentId"></result>
+        <association property="applyUser" javaType="com.atsun.dormitory.po.User">
+            <id column="u_id" property="id"></id>
+            <result column="u_name" property="name"></result>
+        </association>
+        <association property="student" javaType="com.atsun.dormitory.po.Student">
+            <id column="s_id" property="id"></id>
+            <result column="s_name" property="name"></result>
+        </association>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, apply_user_id, reason, `time`, student_id
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from depart_application
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        <!--@mbg.generated-->
+        delete from depart_application
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.atsun.dormitory.po.DepartApplication">
+        <!--@mbg.generated-->
+        insert into depart_application (id, apply_user_id, reason,
+        `time`, student_id)
+        values (#{id,jdbcType=VARCHAR}, #{applyUserId,jdbcType=VARCHAR}, #{reason,jdbcType=VARCHAR},
+        #{time,jdbcType=TIMESTAMP}, #{studentId,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.atsun.dormitory.po.DepartApplication">
+        <!--@mbg.generated-->
+        insert into depart_application
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="applyUserId != null">
+                apply_user_id,
+            </if>
+            <if test="reason != null">
+                reason,
+            </if>
+            <if test="time != null">
+                `time`,
+            </if>
+            <if test="studentId != null">
+                student_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="applyUserId != null">
+                #{applyUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="reason != null">
+                #{reason,jdbcType=VARCHAR},
+            </if>
+            <if test="time != null">
+                #{time,jdbcType=TIMESTAMP},
+            </if>
+            <if test="studentId != null">
+                #{studentId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.atsun.dormitory.po.DepartApplication">
+        <!--@mbg.generated-->
+        update depart_application
+        <set>
+            <if test="applyUserId != null">
+                apply_user_id = #{applyUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="reason != null">
+                reason = #{reason,jdbcType=VARCHAR},
+            </if>
+            <if test="time != null">
+                `time` = #{time,jdbcType=TIMESTAMP},
+            </if>
+            <if test="studentId != null">
+                student_id = #{studentId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.atsun.dormitory.po.DepartApplication">
+        <!--@mbg.generated-->
+        update depart_application
+        set apply_user_id = #{applyUserId,jdbcType=VARCHAR},
+        reason = #{reason,jdbcType=VARCHAR},
+        `time` = #{time,jdbcType=TIMESTAMP},
+        student_id = #{studentId,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <insert id="saveApplication">
+        INSERT INTO depart_application(id, apply_user_id, reason, time, student_id) VALUE (#{id,jdbcType=VARCHAR},
+                                                                                           #{applyUserId,jdbcType=VARCHAR},
+                                                                                           #{reason,jdbcType=VARCHAR},
+                                                                                           #{time,jdbcType=TIMESTAMP},
+                                                                                           #{studentId})
+    </insert>
+    <select id="getByDepartApplicationUserId" resultMap="BaseResultMap">
+        SELECT *
+        FROM depart_application da
+                 LEFT JOIN depart_application_user dau on da.id = dau.application_id
+        WHERE dau.id = #{departApplicationUserId,jdbcType=VARCHAR}
+    </select>
+    <select id="listMyApplication" resultMap="baseMap">
+        select da.id         as id,
+        da.apply_user_id    as apply_user_id,
+        da.reason                 as reason,
+        da.time       as time,
+        da.student_id as student_id,
+        su.id         as u_id,
+        su.name  as u_name,
+        s.id          as s_id,
+        s.name        as s_name
+        from depart_application da
+        left join student s on da.student_id = s.id
+        left join user su on da.apply_user_id = su.id
+        where da.apply_user_id = #{userId,jdbcType=VARCHAR}
+        order by da.time desc
+    </select>
+    <delete id="deleteApplication">
+        delete
+        from depart_application
+        where id = #{departApplicationId,jdbcType=VARCHAR}
+    </delete>
+</mapper>

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atsun.dormitory.dao.NoticeMapper">
+  <resultMap id="BaseResultMap" type="com.atsun.dormitory.po.Notice">
+    <!--@mbg.generated-->
+    <!--@Table notice-->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="msg" jdbcType="VARCHAR" property="msg" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <resultMap id="baseMap" type="com.atsun.dormitory.vo.NoticeVO">
+    <id column="id" property="id"></id>
+    <result column="create_time" property="createTime"></result>
+    <result column="msg" jdbcType="VARCHAR" property="msg" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="is_read" property="isRead"></result>
+    <association property="user" javaType="com.atsun.dormitory.po.User">
+      <id column="u_id" property="id"></id>
+      <result column="u_name" property="name"></result>
+    </association>
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, msg, user_id, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from notice
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <!--@mbg.generated-->
+    delete from notice
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.atsun.dormitory.po.Notice">
+    <!--@mbg.generated-->
+    insert into notice (id, msg, user_id, 
+      create_time)
+    values (#{id,jdbcType=VARCHAR}, #{msg,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.atsun.dormitory.po.Notice">
+    <!--@mbg.generated-->
+    insert into notice
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="msg != null">
+        msg,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="msg != null">
+        #{msg,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.atsun.dormitory.po.Notice">
+    <!--@mbg.generated-->
+    update notice
+    <set>
+      <if test="msg != null">
+        msg = #{msg,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.atsun.dormitory.po.Notice">
+    <!--@mbg.generated-->
+    update notice
+    set msg = #{msg,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="query" resultMap="baseMap">
+    select n.id         as id,
+    n.msg        as msg,
+    n.create_time       as create_time,
+    n.user_id    as user_id,
+    su.id        as u_id,
+    su.name as u_name
+    from notice n
+    left join user su on su.id = n.user_id
+    where n.id = #{nid,jdbcType=VARCHAR}
+  </select>
+  <select id="listByUserId" resultMap="baseMap">
+    select n.id         as id,
+    n.msg        as msg,
+    n.user_id    as user_id,
+    n.create_time       as create_time,
+    nu.is_read   as is_read,
+    su.id        as u_id,
+    su.name as u_name
+    from notice_user nu
+    left join notice n on n.id = nu.notice_id
+    left join user su on su.id = n.user_id
+    where nu.user_id = #{uid}
+    order by is_read , n.create_time desc
+  </select>
+  <select id="listBySendUser" resultMap="baseMap">
+    select id, msg, create_time
+    from notice
+    where user_id = #{userId,jdbcType=VARCHAR} order by create_time desc
+  </select>
+  <delete id="deleteNotice">
+    delete from notice where id=#{nid,jdbcType=VARCHAR}
+  </delete>
+  <select id="queryWithReceiver" resultMap="baseMap">
+    select n.id         as id,
+    n.msg        as msg,
+    n.create_time       as create_time,
+    su.id        as u_id,
+    su.name as u_name,
+    nu.is_read   as is_read
+    from notice_user nu
+    left join notice n on n.id = nu.notice_id
+    left join user su on nu.user_id = su.id
+    where n.id = #{nid,jdbcType=VARCHAR}
+  </select>
+
+  <insert id="save" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+    insert into notice(id,msg, user_id, create_time)
+    VALUE (#{id,jdbcType=VARCHAR},#{msg}, #{userId}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+
+</mapper>

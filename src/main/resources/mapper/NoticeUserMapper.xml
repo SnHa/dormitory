@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atsun.dormitory.dao.NoticeUserMapper">
+    <resultMap id="BaseResultMap" type="com.atsun.dormitory.po.NoticeUser">
+        <!--@mbg.generated-->
+        <!--@Table notice_user-->
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+        <result column="notice_id" jdbcType="VARCHAR" property="noticeId"/>
+        <result column="is_read" jdbcType="VARCHAR" property="isRead"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, user_id, notice_id, is_read
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from notice_user
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        <!--@mbg.generated-->
+        delete from notice_user
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.atsun.dormitory.po.NoticeUser">
+        <!--@mbg.generated-->
+        insert into notice_user (id, user_id, notice_id,
+        is_read)
+        values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{noticeId,jdbcType=VARCHAR},
+        #{isRead,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.atsun.dormitory.po.NoticeUser">
+        <!--@mbg.generated-->
+        insert into notice_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="noticeId != null">
+                notice_id,
+            </if>
+            <if test="isRead != null">
+                is_read,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="noticeId != null">
+                #{noticeId,jdbcType=VARCHAR},
+            </if>
+            <if test="isRead != null">
+                #{isRead,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.atsun.dormitory.po.NoticeUser">
+        <!--@mbg.generated-->
+        update notice_user
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="noticeId != null">
+                notice_id = #{noticeId,jdbcType=VARCHAR},
+            </if>
+            <if test="isRead != null">
+                is_read = #{isRead,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.atsun.dormitory.po.NoticeUser">
+        <!--@mbg.generated-->
+        update notice_user
+        set user_id = #{userId,jdbcType=VARCHAR},
+        notice_id = #{noticeId,jdbcType=VARCHAR},
+        is_read = #{isRead,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <select id="countByUserId" resultType="int">
+        select count(*)
+        from notice_user
+        where is_read = 0
+          and user_id = #{userId,jdbcType=VARCHAR}
+    </select>
+    <insert id="saveRelevance">
+        INSERT INTO notice_user(id, user_id, notice_id, is_read) VALUE (#{param1,jdbcType=VARCHAR},
+                                #{param2,jdbcType=VARCHAR},#{param3,jdbcType=VARCHAR},0)
+    </insert>
+    <update id="updateRead">
+        update notice_user set is_read=1 where notice_id=#{param2,jdbcType=VARCHAR} and user_id=#{param1,jdbcType=VARCHAR}
+    </update>
+    <delete id="deleteReceive">
+        delete from notice_user where notice_id=#{param1,jdbcType=VARCHAR} and user_id=#{param2,jdbcType=VARCHAR}
+    </delete>
+    <delete id="deleteByNoticeId">
+        delete from notice_user where notice_id=#{nid,jdbcType=VARCHAR}
+    </delete>
+</mapper>

@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atsun.dormitory.dao.DepartApplicationUserMapper">
+    <resultMap id="BaseResultMap" type="com.atsun.dormitory.po.DepartApplicationUser">
+        <!--@mbg.generated-->
+        <!--@Table depart_application_user-->
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="operate_user_id" jdbcType="VARCHAR" property="operateUserId"/>
+        <result column="is_agree" jdbcType="VARCHAR" property="isAgree"/>
+        <result column="operate_time" jdbcType="TIMESTAMP" property="operateTime"/>
+        <result column="reason" jdbcType="VARCHAR" property="reason"/>
+        <result column="application_id" jdbcType="VARCHAR" property="applicationId"/>
+    </resultMap>
+
+    <resultMap id="baseMap2" type="com.atsun.dormitory.vo.DepartApplicationUserVO">
+        <id column="id" property="id"></id>
+        <result column="is_agree" property="isAgree"></result>
+        <result column="operate_time" property="operateTime"></result>
+        <result column="reason" property="reason"></result>
+        <association property="operateUser" javaType="com.atsun.dormitory.po.User">
+            <id column="uid" property="id"></id>
+            <result column="uname" property="name"></result>
+        </association>
+        <association property="application" javaType="com.atsun.dormitory.vo.DepartApplicationVO">
+            <id column="id" property="id"></id>
+            <result column="da_reason" property="reason"></result>
+            <result column="time" property="time"></result>
+            <result column="s_id" property="studentId"></result>
+            <association property="student" javaType="com.atsun.dormitory.po.Student">
+                <id column="s_id" property="id"></id>
+                <result column="s_name" property="name"></result>
+            </association>
+            <association property="applyUser" javaType="com.atsun.dormitory.po.User">
+                <id column="u_id" property="id"></id>
+                <result column="u_name" property="name"></result>
+            </association>
+        </association>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, operate_user_id, is_agree, operate_time, reason, application_id
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from depart_application_user
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        <!--@mbg.generated-->
+        delete from depart_application_user
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.atsun.dormitory.po.DepartApplicationUser">
+        <!--@mbg.generated-->
+        insert into depart_application_user (id, operate_user_id, is_agree,
+        operate_time, reason, application_id
+        )
+        values (#{id,jdbcType=VARCHAR}, #{operateUserId,jdbcType=VARCHAR}, #{isAgree,jdbcType=VARCHAR},
+        #{operateTime,jdbcType=TIMESTAMP}, #{reason,jdbcType=VARCHAR}, #{applicationId,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.atsun.dormitory.po.DepartApplicationUser">
+        <!--@mbg.generated-->
+        insert into depart_application_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="operateUserId != null">
+                operate_user_id,
+            </if>
+            <if test="isAgree != null">
+                is_agree,
+            </if>
+            <if test="operateTime != null">
+                operate_time,
+            </if>
+            <if test="reason != null">
+                reason,
+            </if>
+            <if test="applicationId != null">
+                application_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="operateUserId != null">
+                #{operateUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="isAgree != null">
+                #{isAgree,jdbcType=VARCHAR},
+            </if>
+            <if test="operateTime != null">
+                #{operateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="reason != null">
+                #{reason,jdbcType=VARCHAR},
+            </if>
+            <if test="applicationId != null">
+                #{applicationId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.atsun.dormitory.po.DepartApplicationUser">
+        <!--@mbg.generated-->
+        update depart_application_user
+        <set>
+            <if test="operateUserId != null">
+                operate_user_id = #{operateUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="isAgree != null">
+                is_agree = #{isAgree,jdbcType=VARCHAR},
+            </if>
+            <if test="operateTime != null">
+                operate_time = #{operateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="reason != null">
+                reason = #{reason,jdbcType=VARCHAR},
+            </if>
+            <if test="applicationId != null">
+                application_id = #{applicationId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.atsun.dormitory.po.DepartApplicationUser">
+        <!--@mbg.generated-->
+        update depart_application_user
+        set operate_user_id = #{operateUserId,jdbcType=VARCHAR},
+        is_agree = #{isAgree,jdbcType=VARCHAR},
+        operate_time = #{operateTime,jdbcType=TIMESTAMP},
+        reason = #{reason,jdbcType=VARCHAR},
+        application_id = #{applicationId,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <insert id="saveApplication">
+        INSERT INTO depart_application_user(id, operate_user_id, application_id) VALUE (#{param1,jdbcType=VARCHAR},
+                                                                                        #{param2,jdbcType=VARCHAR},
+                                                                                        #{param3,jdbcType=VARCHAR})
+    </insert>
+    <select id="listMyFlow" resultMap="baseMap2">
+        select dau.id           as id,
+               dau.is_agree     as is_agree,
+               dau.operate_time as operate_time,
+               dau.reason       as reason,
+               da.id            as id,
+               da.reason        as da_reason,
+               da.time          as time,
+               s.id             as s_id,
+               s.name           as s_name,
+               su.id            as u_id,
+               su.name          as u_name
+        from depart_application_user dau
+                 left join depart_application da on dau.application_id = da.id
+                 left join student s on s.id = da.student_id
+                 left join user su on da.apply_user_id = su.id
+        where dau.operate_user_id = #{userId}
+        order by da.time desc
+    </select>
+    <delete id="deleteBydepartApplication">
+        delete
+        from depart_application_user dau
+        where dau.application_id = #{applicationId,jdbcType=VARCHAR}
+    </delete>
+    <select id="countFlowAgreeIsNotNull" resultType="int">
+        select count(*)
+        from depart_application_user
+        where application_id = #{applicationId,jdbcType=VARCHAR}
+          and is_agree is null
+    </select>
+    <select id="getLastFlow" resultMap="BaseResultMap">
+        select id,
+               operate_user_id,
+               is_agree,
+               operate_time,
+               reason,
+               application_id
+        from depart_application_user
+        where application_id = #{id}
+        order by id desc
+        limit 1
+    </select>
+    <select id="listFlow" resultMap="baseMap2">
+        select dau.id           as id,
+               dau.is_agree     as is_agree,
+               dau.operate_time as operate_time,
+               dau.reason       as reason,
+               su.id            as uid,
+               su.name          as uname
+        from depart_application_user dau
+                 left join user su on dau.operate_user_id = su.id
+        where application_id = #{applicationId,jdbcType=VARCHAR}
+        order by dau.id desc
+    </select>
+    <select id="countFlow" resultType="int">
+        select count(*)
+        from depart_application_user
+        where application_id = #{departApplicationId,jdbcType=VARCHAR}
+          and is_agree is not null
+    </select>
+    <delete id="deleteFlow">
+        delete
+        from depart_application_user
+        where application_id = #{departApplicationId,jdbcType=VARCHAR}
+    </delete>
+    <select id="countFlowAgreeNull" resultType="int">
+        select count(*)
+        from depart_application_user
+        where operate_user_id = #{operateUserId,jdbcType=VARCHAR}
+          and is_agree is null
+    </select>
+</mapper>

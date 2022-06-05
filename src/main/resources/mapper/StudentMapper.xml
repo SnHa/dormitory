@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atsun.dormitory.dao.StudentMapper">
+    <resultMap id="BaseResultMap" type="com.atsun.dormitory.po.Student">
+        <!--@mbg.generated-->
+        <!--@Table student-->
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="room_id" jdbcType="VARCHAR" property="roomId"/>
+        <result column="faculty_id" jdbcType="VARCHAR" property="facultyId"/>
+        <result column="number" jdbcType="VARCHAR" property="number"/>
+        <result column="registration_date" jdbcType="TIMESTAMP" property="registrationDate"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="is_leave" jdbcType="VARCHAR" property="isLeave"/>
+        <result column="sex" property="sex"></result>
+    </resultMap>
+
+    <resultMap id="baseMap" type="com.atsun.dormitory.vo.StudentVO">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="sex" property="sex"></result>
+        <result column="room_id" property="roomId"/>
+        <result column="faculty_id" property="facultyId"/>
+        <result column="number" property="number"/>
+        <result column="registration_date" property="registrationDate"/>
+        <result column="phone" property="phone"/>
+        <result column="is_leave" property="isLeave"/>
+        <association property="room" javaType="com.atsun.dormitory.po.Room">
+            <id column="r_id" property="id"/>
+            <result column="r_number" property="number"/>
+        </association>
+        <association property="faculty" javaType="com.atsun.dormitory.po.Faculty">
+            <id property="id" column="f_id"/>
+            <result property="name" column="f_name"/>
+        </association>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, `name`, room_id, faculty_id, `number`, registration_date, phone, is_leave
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from student
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        <!--@mbg.generated-->
+        delete from student
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.atsun.dormitory.po.Student">
+        <!--@mbg.generated-->
+        insert into student (id, `name`, room_id,
+        faculty_id, `number`, registration_date,
+        phone, is_leave,sex)
+        values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{roomId,jdbcType=VARCHAR},
+        #{facultyId,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR}, #{registrationDate,jdbcType=TIMESTAMP},
+        #{phone,jdbcType=VARCHAR}, #{isLeave,jdbcType=VARCHAR},#{sex,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.atsun.dormitory.po.Student">
+        <!--@mbg.generated-->
+        insert into student
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="name != null">
+                `name`,
+            </if>
+            <if test="roomId != null">
+                room_id,
+            </if>
+            <if test="facultyId != null">
+                faculty_id,
+            </if>
+            <if test="number != null">
+                `number`,
+            </if>
+            <if test="registrationDate != null">
+                registration_date,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="isLeave != null">
+                is_leave,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="roomId != null">
+                #{roomId,jdbcType=VARCHAR},
+            </if>
+            <if test="facultyId != null">
+                #{facultyId,jdbcType=VARCHAR},
+            </if>
+            <if test="number != null">
+                #{number,jdbcType=VARCHAR},
+            </if>
+            <if test="registrationDate != null">
+                #{registrationDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="isLeave != null">
+                #{isLeave,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.atsun.dormitory.po.Student">
+        <!--@mbg.generated-->
+        update student
+        <set>
+            <if test="name != null">
+                `name` = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="roomId != null">
+                room_id = #{roomId,jdbcType=VARCHAR},
+            </if>
+            <if test="facultyId != null">
+                faculty_id = #{facultyId,jdbcType=VARCHAR},
+            </if>
+            <if test="number != null">
+                `number` = #{number,jdbcType=VARCHAR},
+            </if>
+            <if test="registrationDate != null">
+                registration_date = #{registrationDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="isLeave != null">
+                is_leave = #{isLeave,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null and sex != ''">
+                sex =#{sex,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.atsun.dormitory.po.Student">
+        <!--@mbg.generated-->
+        update student
+        set `name` = #{name,jdbcType=VARCHAR},
+        room_id = #{roomId,jdbcType=VARCHAR},
+        faculty_id = #{facultyId,jdbcType=VARCHAR},
+        `number` = #{number,jdbcType=VARCHAR},
+        registration_date = #{registrationDate,jdbcType=TIMESTAMP},
+        phone = #{phone,jdbcType=VARCHAR},
+        is_leave = #{isLeave,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <select id="list" resultMap="baseMap">
+        select s.id as id,
+        s.name as name,
+        s.sex as sex,
+        s.room_id as room_id,
+        s.faculty_id as faculty_id,
+        s.number as number,
+        s.registration_date as registration_date,
+        s.phone as phone,
+        s.is_leave as is_leave,
+        r.id as r_id,
+        r.number as r_number,
+        f.id as f_id,
+        f.name as f_name
+        from student s
+        left join room r on s.room_id = r.id
+        left join faculty f on s.faculty_id = f.id
+        <where>
+            <if test="name != null and name != ''">
+                instr(s.name, #{name,jdbcType=VARCHAR})
+            </if>
+            <if test="roomId != null and roomId != ''">
+                and s.room_id = #{roomId,jdbcType=VARCHAR}
+            </if>
+            <if test="number != null and number != ''">
+                and instr(s.number, #{number,jdbcType=VARCHAR})
+            </if>
+            <if test="isLeave != null">
+                and s.is_leave = #{isLeave,jdbcType=VARCHAR}
+            </if>
+            <if test="facultyIds != null and facultyIds.size() != 0 != null">
+                and s.faculty_id in
+                <foreach collection="facultyIds" separator="," open="(" close=")" item="item">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="true">
+                and r.building_id in
+                <foreach collection="buildingIds" separator="," open="(" close=")" item="item">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        order by s.id desc
+    </select>
+    <select id="countByRoomId" resultType="int">
+        SELECT COUNT(*)
+        FROM student o
+        WHERE o.room_id = #{roomId,jdbcType=VARCHAR}
+    </select>
+    <select id="countByFacultyId" resultType="java.lang.Integer">
+        select count(*)
+        from student
+        where faculty_id in
+        <foreach collection="facultyId" separator="," open="(" close=")" item="item">
+            #{item}
+        </foreach>
+    </select>
+    <select id="query" resultMap="baseMap">
+        SELECT s.id     as id,
+               s.name   as name,
+               s.sex    as sex,
+               room_id,
+               faculty_id,
+               s.number as number,
+               registration_date,
+               phone,
+               is_leave,
+               r.id     as r_id,
+               r.number as r_number,
+               f.id     as f_id,
+               f.name   as f_name
+        FROM student s
+                 LEFT JOIN room r on s.room_id = r.id
+                 LEFT JOIN faculty f on s.faculty_id = f.id
+        WHERE s.id = #{studentId,jdbcType=VARCHAR}
+    </select>
+    <select id="listByName" resultMap="baseMap">
+        select s.id as id,
+        s.name as name,
+        s.room_id as room_id,
+        s.faculty_id as faculty_id,
+        s.number as number,
+        s.registration_date as registration_date,
+        s.phone as phone,
+        s.is_leave as is_leave,
+        r.id as r_id,
+        r.number as r_number,
+        f.id as f_id,
+        f.name as f_name
+        from student s
+        left join room r on s.room_id = r.id
+        left join faculty f on s.faculty_id = f.id
+        <where>
+            <if test="name != null and name != ''">
+                instr(s.name, #{name,jdbcType=VARCHAR})
+            </if>
+            <if test="true">
+                and r.building_id in
+                <foreach collection="buildingIds" separator="," open="(" close=")" item="item">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        order by s.id desc
+    </select>
+    <update id="updateLeave">
+        update student
+        set is_leave = #{isLeave}
+        where id = #{studentId,jdbcType=VARCHAR}
+    </update>
+    <select id="selectByNumber" resultType="integer">
+        select count(*)
+        from student s
+        where s.number = #{number,jdbcType=VARCHAR}
+    </select>
+    <select id="selectBySex" resultType="java.lang.Integer">
+        select count(*)
+        from student s
+        where s.sex = #{sex,jdbcType=VARCHAR}
+    </select>
+    <select id="selectNumber" resultType="java.lang.String">
+        select s.room_id
+        from student s
+        where s.number = #{number,jdbcType=VARCHAR}
+    </select>
+</mapper>

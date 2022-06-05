@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atsun.dormitory.dao.RoomMapper">
+    <resultMap id="BaseResultMap" type="com.atsun.dormitory.po.Room">
+        <!--@mbg.generated-->
+        <!--@Table room-->
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="number" jdbcType="VARCHAR" property="number"/>
+        <result column="building_id" jdbcType="VARCHAR" property="buildingId"/>
+        <result column="max_capacity" jdbcType="INTEGER" property="maxCapacity"/>
+        <result column="electricity" jdbcType="VARCHAR" property="electricity"></result>
+    </resultMap>
+
+    <resultMap id="baseMap" type="com.atsun.dormitory.vo.RoomVO">
+        <id column="id" property="id"/>
+        <result column="number" property="number"/>
+        <result property="buildingId" column="b_id"/>
+        <result column="max_capacity" property="maxCapacity"/>
+        <result column="current_num" property="currentNum"/>
+        <result column="electricity" property="electricity"></result>
+        <association property="building" javaType="com.atsun.dormitory.po.Building">
+            <id column="b_id" property="id"/>
+            <result column="name" property="name"/>
+        </association>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, `number`, building_id, max_capacity,electricity
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from room
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        <!--@mbg.generated-->
+        delete from room
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.atsun.dormitory.po.Room">
+        <!--@mbg.generated-->
+        insert into room (id, `number`, building_id,
+        max_capacity,electricity)
+        values (#{id,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR}, #{buildingId,jdbcType=VARCHAR},
+        #{maxCapacity,jdbcType=INTEGER},#{electricity,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.atsun.dormitory.po.Room">
+        <!--@mbg.generated-->
+        insert into room
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="number != null">
+                `number`,
+            </if>
+            <if test="buildingId != null">
+                building_id,
+            </if>
+            <if test="maxCapacity != null">
+                max_capacity,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="number != null">
+                #{number,jdbcType=VARCHAR},
+            </if>
+            <if test="buildingId != null">
+                #{buildingId,jdbcType=VARCHAR},
+            </if>
+            <if test="maxCapacity != null">
+                #{maxCapacity,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.atsun.dormitory.po.Room">
+        <!--@mbg.generated-->
+        update room
+        <set>
+            <if test="number != null">
+                `number` = #{number,jdbcType=VARCHAR},
+            </if>
+            <if test="buildingId != null">
+                building_id = #{buildingId,jdbcType=VARCHAR},
+            </if>
+            <if test="electricity != null and electricity != ''">
+                electricity=#{electricity,jdbcType=VARCHAR},
+            </if>
+            <if test="maxCapacity != null">
+                max_capacity = #{maxCapacity,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.atsun.dormitory.po.Room">
+        <!--@mbg.generated-->
+        update room
+        set `number` = #{number,jdbcType=VARCHAR},
+        building_id = #{buildingId,jdbcType=VARCHAR},
+        max_capacity = #{maxCapacity,jdbcType=INTEGER}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <select id="list" resultMap="baseMap">
+        select r.id as id,
+        number,
+        building_id,
+        max_capacity,
+        electricity,
+        b.id as b_id,
+        b.name as name,
+        (select count(*) from student where room_id = r.id) as current_num
+        from room r join building b on b.id = r.building_id
+        <where>
+            <if test="number != null and number != ''">
+                instr(`number`, #{number})
+            </if>
+            <if test="selectBid != null and selectBid.size() != 0">
+                and building_id in
+                <foreach collection="selectBid" open="(" close=")" separator="," item="item">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="isFull != null and isFull">
+                and max_capacity = (select count(*) from student where room_id = r.id)
+            </if>
+            <if test="isFull != null and not isFull">
+                and max_capacity > (select count(*) from student where room_id = r.id)
+            </if>
+            <if test="true">
+                and building_id in
+                <foreach collection="byParentIds" open="(" close=")" separator="," item="item">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        order by `number`
+    </select>
+    <select id="query" resultMap="baseMap">
+        select o.id AS id, o.number AS number, o.building_id AS b_id, o.max_capacity
+        from room o
+        where o.id = #{roomId,jdbcType=VARCHAR};
+    </select>
+    <select id="count" resultType="int">
+        select count(*)
+        from room r join building b on b.id = r.building_id
+        <where>
+            <if test="number != null and number != ''">
+                instr(`number`, #{number})
+            </if>
+            <if test="selectBid != null and selectBid.size() != 0">
+                and building_id in
+                <foreach collection="selectBid" open="(" close=")" separator="," item="item">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="isFull != null and isFull">
+                and max_capacity = (select count(*) from student where room_id = r.id)
+            </if>
+            <if test="isFull != null and not isFull">
+                and max_capacity > (select count(*) from student where room_id = r.id)
+            </if>
+            <if test="true">
+                and building_id in
+                <foreach collection="byParentIds" open="(" close=")" separator="," item="item">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        order by `number`
+    </select>
+    <select id="listByBuildingId" resultMap="BaseResultMap">
+        select id, number, building_id, max_capacity
+        from room where building_id in
+        <foreach collection="buildingId" open="(" close=")" item="item" separator=",">
+            #{item}
+        </foreach>
+    </select>
+    <select id="listAll" resultMap="baseMap">
+
+    </select>
+    <select id="getMaxCapacity" resultType="int">
+        SELECT o.max_capacity
+        FROM room o
+        WHERE o.id = #{roomId,jdbcType=VARCHAR}
+    </select>
+    <select id="roomCountByBuilding" resultType="int">
+        select count(*)
+        from room where building_id in
+        <foreach collection="bids" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+    <select id="selectByNumber" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from room
+        where number=#{number,jdbcType=VARCHAR}
+    </select>
+</mapper>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atsun.dormitory.dao.RoleMapper">
+    <resultMap id="BaseResultMap" type="com.atsun.dormitory.po.Role">
+        <!--@mbg.generated-->
+        <!--@Table role-->
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, `name`, create_time
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from role
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        <!--@mbg.generated-->
+        delete from role
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.atsun.dormitory.po.Role">
+        <!--@mbg.generated-->
+        insert into role (id, `name`, create_time
+        )
+        values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.atsun.dormitory.po.Role">
+        <!--@mbg.generated-->
+        insert into role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="name != null">
+                `name`,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.atsun.dormitory.po.Role">
+        <!--@mbg.generated-->
+        update role
+        <set>
+            <if test="name != null">
+                `name` = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.atsun.dormitory.po.Role">
+        <!--@mbg.generated-->
+        update role
+        set `name` = #{name,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <select id="findRolePage" resultType="com.atsun.dormitory.vo.RoleVO">
+        SELECT o.id AS id, o.name AS name, o.create_time AS createTime FROM role o where 1=1
+        <if test="roleName != null and roleName != ''">
+            AND o.name LIKE '%' #{roleName,jdbcType=VARCHAR} '%'
+        </if>
+    </select>
+    <select id="functionIds" resultType="java.lang.String">
+        SELECT t.permission_id FROM role o LEFT JOIN role_permission t ON o.id = t.role_id WHERE
+        o.id=#{roleId,jdbcType=VARCHAR}
+    </select>
+    <select id="findPermissionIds" resultType="java.lang.String">
+        SELECT t.permission_id FROM role o LEFT JOIN role_permission T on o.id = t.role_id WHERE
+        o.id=#{roleId,jdbcType=VARCHAR}
+    </select>
+    <select id="count" resultType="int">
+        SELECT COUNT(*)
+        FROM role o
+    </select>
+    <select id="finds" resultType="com.atsun.dormitory.vo.RoleVO">
+        select o.id AS id, o.name AS name
+        from role o
+        <where>
+            <if test="name != null and name.length>0">
+                instr(name,#{name})
+            </if>
+        </where>
+    </select>
+    <select id="RoleNames" resultType="java.lang.String">
+        select r.name  from role r where r.id
+        <foreach collection="roleIds" open="IN (" close=")" separator="," item="roleId">
+            #{roleId,jdbcType=VARCHAR}
+        </foreach>
+    </select>
+</mapper>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atsun.dormitory.dao.FacultyMapper">
+  <resultMap id="BaseResultMap" type="com.atsun.dormitory.po.Faculty">
+    <!--@mbg.generated-->
+    <!--@Table faculty-->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="p_id" jdbcType="VARCHAR" property="pId" />
+    <result column="order_num" jdbcType="INTEGER" property="orderNum" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, `name`, p_id, order_num
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from faculty
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <!--@mbg.generated-->
+    delete from faculty
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.atsun.dormitory.po.Faculty">
+    <!--@mbg.generated-->
+    insert into faculty (id, `name`, p_id, 
+      order_num)
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{pId,jdbcType=VARCHAR}, 
+      #{orderNum,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.atsun.dormitory.po.Faculty">
+    <!--@mbg.generated-->
+    insert into faculty
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="pId != null">
+        p_id,
+      </if>
+      <if test="orderNum != null">
+        order_num,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="pId != null">
+        #{pId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNum != null">
+        #{orderNum,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.atsun.dormitory.po.Faculty">
+    <!--@mbg.generated-->
+    update faculty
+    <set>
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="pId != null">
+        p_id = #{pId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNum != null">
+        order_num = #{orderNum,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.atsun.dormitory.po.Faculty">
+    <!--@mbg.generated-->
+    update faculty
+    set `name` = #{name,jdbcType=VARCHAR},
+      p_id = #{pId,jdbcType=VARCHAR},
+      order_num = #{orderNum,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="listByParentId" resultType="java.lang.String">
+    select id from faculty o where o.p_id = #{facultyId,jdbcType=VARCHAR}
+  </select>
+    <select id="list" resultType="com.atsun.dormitory.vo.FacultyVO">
+      select id, name, p_id from faculty
+      where 1=1
+      <if test="parentId != null and parentId != '' ">
+        and  p_id = #{parentId}
+      </if>
+      order by order_num
+    </select>
+    <select id="query" resultType="com.atsun.dormitory.vo.FacultyVO">
+      SELECT o.id AS id, o.name AS name, o.p_id AS pId, o.order_num AS orderNum
+      FROM faculty o WHERE o.id=#{facultyId,jdbcType=VARCHAR}
+    </select>
+  <select id="listAll" resultType="com.atsun.dormitory.vo.FacultyVO">
+    SELECT id,name FROM faculty
+  </select>
+</mapper>

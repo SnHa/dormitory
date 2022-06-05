@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atsun.dormitory.dao.PayMapper">
+  <resultMap id="BaseResultMap" type="com.atsun.dormitory.po.Pay">
+    <!--@mbg.generated-->
+    <!--@Table pay-->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="room_id" jdbcType="VARCHAR" property="roomId" />
+    <result column="pay_amount" jdbcType="VARCHAR" property="payAmount" />
+    <result column="subject" jdbcType="VARCHAR" property="subject" />
+    <result column="body" jdbcType="VARCHAR" property="body" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+  </resultMap>
+  <resultMap id="baseMap" type="com.atsun.dormitory.vo.PayVO">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="room_id" jdbcType="VARCHAR" property="roomId" />
+    <result column="pay_amount" jdbcType="VARCHAR" property="payAmount" />
+    <result column="subject" jdbcType="VARCHAR" property="subject" />
+    <result column="body" jdbcType="VARCHAR" property="body" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <association property="room" javaType="com.atsun.dormitory.po.Room">
+      <id column="r_id" property="id"></id>
+      <result column="r_number" property="number"></result>
+    </association>
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, room_id, pay_amount, subject, body, `status`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from pay
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <!--@mbg.generated-->
+    delete from pay
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.atsun.dormitory.po.Pay">
+    <!--@mbg.generated-->
+    insert into pay (id, room_id, pay_amount, 
+      subject, body, `status`
+      )
+    values (#{id,jdbcType=VARCHAR}, #{roomId,jdbcType=VARCHAR}, #{payAmount,jdbcType=VARCHAR}, 
+      #{subject,jdbcType=VARCHAR}, #{body,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.atsun.dormitory.po.Pay">
+    <!--@mbg.generated-->
+    insert into pay
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="roomId != null">
+        room_id,
+      </if>
+      <if test="payAmount != null">
+        pay_amount,
+      </if>
+      <if test="subject != null">
+        subject,
+      </if>
+      <if test="body != null">
+        body,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="roomId != null">
+        #{roomId,jdbcType=VARCHAR},
+      </if>
+      <if test="payAmount != null">
+        #{payAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="subject != null">
+        #{subject,jdbcType=VARCHAR},
+      </if>
+      <if test="body != null">
+        #{body,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.atsun.dormitory.po.Pay">
+    <!--@mbg.generated-->
+    update pay
+    <set>
+      <if test="roomId != null">
+        room_id = #{roomId,jdbcType=VARCHAR},
+      </if>
+      <if test="payAmount != null">
+        pay_amount = #{payAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="subject != null">
+        subject = #{subject,jdbcType=VARCHAR},
+      </if>
+      <if test="body != null">
+        body = #{body,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.atsun.dormitory.po.Pay">
+    <!--@mbg.generated-->
+    update pay
+    set room_id = #{roomId,jdbcType=VARCHAR},
+      pay_amount = #{payAmount,jdbcType=VARCHAR},
+      subject = #{subject,jdbcType=VARCHAR},
+      body = #{body,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="list" resultMap="baseMap">
+    select
+      p.id as id,
+      p.room_id as room_id,
+      p.pay_amount as pay_amount,
+      p.subject as subject,
+      p.body as body,
+      p.status as status,
+      r.number as r_number
+    from pay p LEFT JOIN room r ON p.room_id=r.id
+    where 1=1
+  </select>
+    <select id="query" resultMap="baseMap">
+      select
+        p.id as id,
+        p.room_id as room_id,
+        p.pay_amount as pay_amount,
+        p.subject as subject,
+        p.body as body,
+        p.status as status,
+        r.number as r_number
+      from pay p LEFT JOIN room r ON p.room_id=r.id
+      where p.room_id=#{roomId,jdbcType=VARCHAR}
+    </select>
+</mapper>

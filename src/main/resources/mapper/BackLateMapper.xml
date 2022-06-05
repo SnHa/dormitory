@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atsun.dormitory.dao.BackLateMapper">
+    <resultMap id="BaseResultMap" type="com.atsun.dormitory.po.BackLate">
+        <!--@mbg.generated-->
+        <!--@Table back_late-->
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="student_id" jdbcType="VARCHAR" property="studentId"/>
+        <result column="back_date" jdbcType="TIMESTAMP" property="backDate"/>
+        <result column="reason" jdbcType="VARCHAR" property="reason"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <resultMap id="baseMap" type="com.atsun.dormitory.vo.BackLateVO">
+        <result property="id" column="id"></result>
+        <result property="studentId" column="student_id"></result>
+        <result property="reason" column="reason"></result>
+        <result property="backDate" column="back_date"></result>
+        <result property="createTime" column="create_time"></result>
+        <result property="updateTime" column="update_time"></result>
+        <association property="student" javaType="com.atsun.dormitory.po.Student">
+            <id property="id" column="s_id"></id>
+            <result property="name" column="s_name"></result>
+        </association>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, student_id, back_date, reason, create_time, update_time
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from back_late
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        <!--@mbg.generated-->
+        delete from back_late
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.atsun.dormitory.po.BackLate">
+        <!--@mbg.generated-->
+        insert into back_late (id, student_id, back_date,
+        reason, create_time, update_time
+        )
+        values (#{id,jdbcType=VARCHAR}, #{studentId,jdbcType=VARCHAR}, #{backDate,jdbcType=TIMESTAMP},
+        #{reason,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.atsun.dormitory.po.BackLate">
+        <!--@mbg.generated-->
+        insert into back_late
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="studentId != null">
+                student_id,
+            </if>
+            <if test="backDate != null">
+                back_date,
+            </if>
+            <if test="reason != null">
+                reason,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="studentId != null">
+                #{studentId,jdbcType=VARCHAR},
+            </if>
+            <if test="backDate != null">
+                #{backDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="reason != null">
+                #{reason,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.atsun.dormitory.po.BackLate">
+        <!--@mbg.generated-->
+        update back_late
+        <set>
+            <if test="studentId != null">
+                student_id = #{studentId,jdbcType=VARCHAR},
+            </if>
+            <if test="backDate != null">
+                back_date = #{backDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="reason != null">
+                reason = #{reason,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.atsun.dormitory.po.BackLate">
+        <!--@mbg.generated-->
+        update back_late
+        set student_id = #{studentId,jdbcType=VARCHAR},
+        back_date = #{backDate,jdbcType=TIMESTAMP},
+        reason = #{reason,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        update_time = #{updateTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <select id="list" resultMap="baseMap">
+        select bl.id as id,
+        bl.student_id as studnet_id,
+        bl.reason as reason,
+        bl.back_date as back_date,
+        bl.create_time as create_time,
+        bl.update_time as update_time,
+        s.id as s_id,
+        s.name as s_name
+        from back_late bl
+        left join student s on s.id = bl.student_id
+        left join room r on s.room_id = r.id
+        <where>
+            <if test="studentId != null and studentId != ''">
+                student_id = #{studentId,jdbcType=VARCHAR}
+            </if>
+            <if test="true">
+                and r.building_id in
+                <foreach collection="bids" separator="," open="(" close=")" item="item">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        order by id desc
+    </select>
+    <select id="query" resultMap="baseMap">
+        select bl.id          as id,
+               bl.student_id  as student_id,
+               bl.reason      as reason,
+               bl.back_date   as back_date,
+               bl.create_time as create_time,
+               bl.update_time as update_time,
+               s.id           as s_id,
+               s.name         as s_name
+        from back_late bl
+                 left join student s on s.id = bl.student_id
+        where bl.id = #{blid,jdbcType=VARCHAR}
+    </select>
+</mapper>

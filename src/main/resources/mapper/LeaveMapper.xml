@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atsun.dormitory.dao.LeaveMapper">
+    <resultMap id="BaseResultMap" type="com.atsun.dormitory.po.Leave">
+        <!--@mbg.generated-->
+        <!--@Table leave-->
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="time" jdbcType="TIMESTAMP" property="time"/>
+        <result column="reason" jdbcType="VARCHAR" property="reason"/>
+        <result column="is_back" jdbcType="TINYINT" property="isBack"/>
+        <result column="student_id" jdbcType="VARCHAR" property="studentId"/>
+        <result column="target" jdbcType="VARCHAR" property="target"/>
+        <result column="back_date" jdbcType="TIMESTAMP" property="backDate"/>
+    </resultMap>
+
+    <resultMap id="baseMap" type="com.atsun.dormitory.vo.LeaveVO">
+        <id column="id" property="id"></id>
+        <result column="time" property="time"></result>
+        <result column="reason" property="reason"></result>
+        <result column="is_back" property="isBack"></result>
+        <result column="student_id" property="studentId"></result>
+        <result column="target" property="target"></result>
+        <result column="back_date" property="backDate"></result>
+        <association property="student" javaType="com.atsun.dormitory.po.Student">
+            <id column="s_id" property="id"></id>
+            <result column="s_name" property="name"></result>
+        </association>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, `time`, reason, is_back, student_id, target, back_date
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from `leave`
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" >
+        <!--@mbg.generated-->
+        delete from `leave`
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.atsun.dormitory.po.Leave">
+        <!--@mbg.generated-->
+        insert into `leave` (id, `time`, reason,
+        is_back, student_id, target,
+        back_date)
+        values (#{id,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}, #{reason,jdbcType=VARCHAR},
+        #{isBack,jdbcType=BOOLEAN}, #{studentId,jdbcType=VARCHAR}, #{target,jdbcType=VARCHAR},
+        #{backDate,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" parameterType="com.atsun.dormitory.po.Leave">
+        <!--@mbg.generated-->
+        insert into leave
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="time != null">
+                `time`,
+            </if>
+            <if test="reason != null">
+                reason,
+            </if>
+            <if test="isBack != null">
+                is_back,
+            </if>
+            <if test="studentId != null">
+                student_id,
+            </if>
+            <if test="target != null">
+                target,
+            </if>
+            <if test="backDate != null">
+                back_date,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="time != null">
+                #{time,jdbcType=TIMESTAMP},
+            </if>
+            <if test="reason != null">
+                #{reason,jdbcType=VARCHAR},
+            </if>
+            <if test="isBack != null">
+                #{isBack,jdbcType=VARCHAR},
+            </if>
+            <if test="studentId != null">
+                #{studentId,jdbcType=VARCHAR},
+            </if>
+            <if test="target != null">
+                #{target,jdbcType=VARCHAR},
+            </if>
+            <if test="backDate != null">
+                #{backDate,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.atsun.dormitory.po.Leave">
+        <!--@mbg.generated-->
+        update leave
+        <set>
+            <if test="time != null">
+                `time` = #{time,jdbcType=TIMESTAMP},
+            </if>
+            <if test="reason != null">
+                reason = #{reason,jdbcType=VARCHAR},
+            </if>
+            <if test="isBack != null">
+                is_back = #{isBack,jdbcType=VARCHAR},
+            </if>
+            <if test="studentId != null">
+                student_id = #{studentId,jdbcType=VARCHAR},
+            </if>
+            <if test="target != null">
+                target = #{target,jdbcType=VARCHAR},
+            </if>
+            <if test="backDate != null">
+                back_date = #{backDate,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.atsun.dormitory.po.Leave">
+        <!--@mbg.generated-->
+        update leave
+        set `time` = #{time,jdbcType=TIMESTAMP},
+        reason = #{reason,jdbcType=VARCHAR},
+        is_back = #{isBack,jdbcType=VARCHAR},
+        student_id = #{studentId,jdbcType=VARCHAR},
+        target = #{target,jdbcType=VARCHAR},
+        back_date = #{backDate,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <select id="list" resultMap="baseMap">
+        select
+        l.id as id,
+        l.reason as reason,
+        l.time as time,
+        l.is_back as is_back,
+        l.student_id as student_id,
+        l.target as target,
+        l.back_date as back_date,
+        s.id as s_id,
+        s.name as s_name
+        from `leave` l left join student s on s.id = l.student_id
+        left join room r on s.room_id = r.id
+        <where>
+            <if test="studentId != null and studentId != ''">
+                l.student_id = #{studentId,jdbcType=VARCHAR}
+            </if>
+            <if test="isBack != null">
+                and l.is_back = #{isBack,jdbcType=BOOLEAN}
+            </if>
+            <if test="true">
+                and r.building_id in
+                <foreach collection="bids" separator="," open="(" close=")" item="item">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        order by l.time desc
+    </select>
+    <insert id="save">
+        insert into `leave`(id, time, reason, is_back, student_id, target, back_date)
+            value (#{id,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}, #{reason,jdbcType=VARCHAR}, 0,
+                   #{studentId,jdbcType=VARCHAR},
+                   #{target,jdbcType=VARCHAR}, #{backDate,jdbcType=TIMESTAMP})
+    </insert>
+    <select id="query" resultMap="baseMap">
+        select l.id,
+               time,
+               reason,
+               is_back,
+               student_id,
+               target,
+               back_date,
+               s.name as s_name,
+               s.id   as s_id
+        from `leave` l
+                 left join student s on s.id = l.student_id
+        where l.id = #{lid,jdbcType=VARCHAR};
+    </select>
+    <update id="update">
+        update `leave`
+        set is_back = 1
+        where id = #{lid,jdbcType=VARCHAR}
+    </update>
+</mapper>

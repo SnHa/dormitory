@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atsun.dormitory.dao.RepairMapper">
+  <resultMap id="BaseResultMap" type="com.atsun.dormitory.po.Repair">
+    <!--@mbg.generated-->
+    <!--@Table repair-->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="room_id" jdbcType="VARCHAR" property="roomId" />
+    <result column="describe" jdbcType="VARCHAR" property="describe" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="finish_date" jdbcType="TIMESTAMP" property="finishDate" />
+    <result column="img" jdbcType="VARCHAR" property="img" />
+  </resultMap>
+  <resultMap id="baseMap" type="com.atsun.dormitory.vo.RepairVO">
+    <id column="id" property="id"></id>
+    <result column="room_id" property="roomId"></result>
+    <result column="status" property="status"></result>
+    <result property="createDate" column="create_date"></result>
+    <result column="finish_date" property="finishDate"></result>
+    <result column="describe" property="describe"></result>
+    <result column="img" property="img"></result>
+    <association property="room" javaType="com.atsun.dormitory.po.Room">
+      <id column="r_id" property="id"></id>
+      <result column="r_number" property="number"></result>
+    </association>
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, room_id, `describe`, `status`, create_date, finish_date, img
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from repair
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <!--@mbg.generated-->
+    delete from repair
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.atsun.dormitory.po.Repair">
+    <!--@mbg.generated-->
+    insert into repair (id, room_id, `describe`, 
+      `status`, create_date, finish_date, 
+      img)
+    values (#{id,jdbcType=VARCHAR}, #{roomId,jdbcType=VARCHAR}, #{describe,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{finishDate,jdbcType=TIMESTAMP}, 
+      #{img,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.atsun.dormitory.po.Repair">
+    <!--@mbg.generated-->
+    insert into repair
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="roomId != null">
+        room_id,
+      </if>
+      <if test="describe != null">
+        `describe`,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="finishDate != null">
+        finish_date,
+      </if>
+      <if test="img != null">
+        img,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="roomId != null">
+        #{roomId,jdbcType=VARCHAR},
+      </if>
+      <if test="describe != null">
+        #{describe,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="finishDate != null">
+        #{finishDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="img != null">
+        #{img,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.atsun.dormitory.po.Repair">
+    <!--@mbg.generated-->
+    update repair
+    <set>
+      <if test="roomId != null">
+        room_id = #{roomId,jdbcType=VARCHAR},
+      </if>
+      <if test="describe != null">
+        `describe` = #{describe,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="finishDate != null">
+        finish_date = #{finishDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="img != null">
+        img = #{img,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.atsun.dormitory.po.Repair">
+    <!--@mbg.generated-->
+    update repair
+    set room_id = #{roomId,jdbcType=VARCHAR},
+      `describe` = #{describe,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      finish_date = #{finishDate,jdbcType=TIMESTAMP},
+      img = #{img,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+    <select id="list" resultMap="baseMap">
+      select re.id as id,
+      re.room_id as room_id,
+      re.status as status,
+      re.create_date as create_date,
+      finish_date as finish_date,
+      re.`describe`,
+      re.img as img,
+      r.id as r_id,
+      r.number as r_number
+      from repair re
+      join room r on r.id = re.room_id
+      <where>
+        <if test="roomId != null and roomId != ''">
+          re.room_id = #{roomId,jdbcType=VARCHAR}
+        </if>
+        <if test="createDate != null and createDate !=''">
+          and  re.create_date like concat('%',#{createDate},'%')
+        </if>
+        <if test="status != null">
+          and re.status = #{status,jdbcType=BOOLEAN}
+        </if>
+        <if test="true">
+          and r.building_id in
+          <foreach collection="bids"
+                   open="("
+                   close=")"
+                   separator=","
+                   item="item">
+            #{item}
+          </foreach>
+        </if>
+      </where>
+      order by id desc
+    </select>
+  <select id="query" resultMap="baseMap">
+    select re.id as id,
+    re.room_id as room_id,
+    status,
+    create_date,
+    `describe`,
+    finish_date,
+    re.img as img,
+    r.id as r_id,
+    r.number as number
+    from repair re
+    join room r on r.id = re.room_id
+    where re.id = #{id}
+  </select>
+</mapper>

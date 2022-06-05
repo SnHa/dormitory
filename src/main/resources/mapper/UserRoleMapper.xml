@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atsun.dormitory.dao.UserRoleMapper">
+    <resultMap id="BaseResultMap" type="com.atsun.dormitory.po.UserRole">
+        <!--@mbg.generated-->
+        <!--@Table user_role-->
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+        <result column="role_id" jdbcType="VARCHAR" property="roleId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, user_id, role_id, create_time, update_time
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from user_role
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        <!--@mbg.generated-->
+        delete from user_role
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.atsun.dormitory.po.UserRole">
+        <!--@mbg.generated-->
+        insert into user_role (id, user_id, role_id,
+        create_time, update_time)
+        values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{roleId,jdbcType=VARCHAR},
+        #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" parameterType="com.atsun.dormitory.po.UserRole">
+        <!--@mbg.generated-->
+        insert into user_role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="roleId != null">
+                role_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="roleId != null">
+                #{roleId,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.atsun.dormitory.po.UserRole">
+        <!--@mbg.generated-->
+        update user_role
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="roleId != null">
+                role_id = #{roleId,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.atsun.dormitory.po.UserRole">
+        <!--@mbg.generated-->
+        update user_role
+        set user_id = #{userId,jdbcType=VARCHAR},
+        role_id = #{roleId,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        update_time = #{updateTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <select id="findRoleIds" resultType="java.lang.String">
+        SELECT o.role_id FROM user_role o WHERE user_id=#{userId,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByRoleId">
+        DELETE FROM user_role o WHERE o.role_id=#{roleId,jdbcType=VARCHAR}
+    </delete>
+    <select id="findUserIds" resultType="java.lang.String">
+        SELECT DISTINCT o.user_id FROM user_role o
+        <if test="userRoleIds != null and userRoleIds.size() != 0">
+            <foreach collection="userRoleIds" open="WHERE  o.role_id IN(" close=")" item="userRoleId" separator=",">
+                #{userRoleId,jdbcType=VARCHAR}
+            </foreach>
+        </if>
+        <if test="userRoleIds.size() == 0 ">
+            <where>1=2</where>
+        </if>
+    </select>
+    <select id="findRole" resultType="com.atsun.dormitory.vo.RoleVO">
+        SELECT r.id AS id,r.name AS name, r.create_time AS createTime FROM user_role o LEFT JOIN role r on o.role_id =
+        r.id
+        WHERE o.user_id=#{userId,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByUserId">
+        DELETE FROM user_role o WHERE o.user_id=#{userId,jdbcType=VARCHAR}
+    </delete>
+    <insert id="batchInsert">
+        INSERT INTO user_role (user_id, role_id, id, create_time, update_time) VALUES
+        <foreach collection="userRoles" item="userRole" separator=",">
+            (#{userRole.userId,jdbcType=VARCHAR},#{userRole.roleId,jdbcType=VARCHAR},#{userRole.id,jdbcType=VARCHAR},
+            #{userRole.createTime,jdbcType=TIMESTAMP},#{userRole.updateTime,jdbcType=TIMESTAMP})
+        </foreach>
+    </insert>
+</mapper>

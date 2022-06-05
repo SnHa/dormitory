@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atsun.dormitory.dao.BuildingMapper">
+    <resultMap id="BaseResultMap" type="com.atsun.dormitory.po.Building">
+        <!--@mbg.generated-->
+        <!--@Table building-->
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="p_id" jdbcType="VARCHAR" property="pId"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, `name`, p_id
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from building
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        <!--@mbg.generated-->
+        delete from building
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.atsun.dormitory.po.Building">
+        <!--@mbg.generated-->
+        insert into building (id, `name`, p_id
+        )
+        values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{pId,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.atsun.dormitory.po.Building">
+        <!--@mbg.generated-->
+        insert into building
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="name != null">
+                `name`,
+            </if>
+            <if test="pId != null">
+                p_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="pId != null">
+                #{pId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.atsun.dormitory.po.Building">
+        <!--@mbg.generated-->
+        update building
+        <set>
+            <if test="name != null">
+                `name` = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="pId != null">
+                p_id = #{pId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.atsun.dormitory.po.Building">
+        <!--@mbg.generated-->
+        update building
+        set `name` = #{name,jdbcType=VARCHAR},
+        p_id = #{pId,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <select id="findAll" resultType="com.atsun.dormitory.vo.BuildingListVo">
+        SELECT o.id AS id, o.name AS name
+        FROM building o
+    </select>
+    <select id="finds" resultType="com.atsun.dormitory.vo.BuildingVo">
+        SELECT o.id AS id, o.name AS  name, o.p_id AS pid FROM building o
+    </select>
+    <select id="listByParentId" resultType="java.lang.String">
+        SELECT o.id FROM building o WHERE p_id=#{pId,jdbcType=VARCHAR}
+    </select>
+    <select id="countStudentByBuildingIds" resultType="java.lang.Integer">
+        select count(*)
+        from student where room_id in (select id from room where room.building_id in
+        <foreach collection="buildingIds" open="(" close=")" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+    </select>
+    <select id="countRoomByBuildingIds" resultType="java.lang.Integer">
+        select count(*)
+        from room where building_id in
+        <foreach collection="buildingIds" open="(" close=")" item="item" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+</mapper>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atsun.dormitory.dao.ImageMapper">
+  <resultMap id="BaseResultMap" type="com.atsun.dormitory.po.Image">
+    <!--@mbg.generated-->
+    <!--@Table image-->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="save_name" jdbcType="VARCHAR" property="saveName" />
+    <result column="original_name" jdbcType="VARCHAR" property="originalName" />
+    <result column="md5" jdbcType="VARCHAR" property="md5" />
+    <result column="upload_user" jdbcType="VARCHAR" property="uploadUser" />
+    <result column="upload_time" jdbcType="TIMESTAMP" property="uploadTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, save_name, original_name, md5, upload_user, upload_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from image
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <!--@mbg.generated-->
+    delete from image
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.atsun.dormitory.po.Image">
+    <!--@mbg.generated-->
+    insert into image (id, save_name, original_name, 
+      md5, upload_user, upload_time
+      )
+    values (#{id,jdbcType=VARCHAR}, #{saveName,jdbcType=VARCHAR}, #{originalName,jdbcType=VARCHAR}, 
+      #{md5,jdbcType=VARCHAR}, #{uploadUser,jdbcType=VARCHAR}, #{uploadTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.atsun.dormitory.po.Image">
+    <!--@mbg.generated-->
+    insert into image
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="saveName != null">
+        save_name,
+      </if>
+      <if test="originalName != null">
+        original_name,
+      </if>
+      <if test="md5 != null">
+        md5,
+      </if>
+      <if test="uploadUser != null">
+        upload_user,
+      </if>
+      <if test="uploadTime != null">
+        upload_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="saveName != null">
+        #{saveName,jdbcType=VARCHAR},
+      </if>
+      <if test="originalName != null">
+        #{originalName,jdbcType=VARCHAR},
+      </if>
+      <if test="md5 != null">
+        #{md5,jdbcType=VARCHAR},
+      </if>
+      <if test="uploadUser != null">
+        #{uploadUser,jdbcType=VARCHAR},
+      </if>
+      <if test="uploadTime != null">
+        #{uploadTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.atsun.dormitory.po.Image">
+    <!--@mbg.generated-->
+    update image
+    <set>
+      <if test="saveName != null">
+        save_name = #{saveName,jdbcType=VARCHAR},
+      </if>
+      <if test="originalName != null">
+        original_name = #{originalName,jdbcType=VARCHAR},
+      </if>
+      <if test="md5 != null">
+        md5 = #{md5,jdbcType=VARCHAR},
+      </if>
+      <if test="uploadUser != null">
+        upload_user = #{uploadUser,jdbcType=VARCHAR},
+      </if>
+      <if test="uploadTime != null">
+        upload_time = #{uploadTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.atsun.dormitory.po.Image">
+    <!--@mbg.generated-->
+    update image
+    set save_name = #{saveName,jdbcType=VARCHAR},
+      original_name = #{originalName,jdbcType=VARCHAR},
+      md5 = #{md5,jdbcType=VARCHAR},
+      upload_user = #{uploadUser,jdbcType=VARCHAR},
+      upload_time = #{uploadTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+    <select id="selectByMd5" resultMap="BaseResultMap">
+      select * from image where md5 = #{md5,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteBySaveName">
+      delete from image o where  o.save_name
+      <foreach collection="strings" open="IN(" close=")" separator="," item="item">
+        #{item,jdbcType=VARCHAR}
+      </foreach>
+    </delete>
+</mapper>

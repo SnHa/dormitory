@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atsun.dormitory.dao.LogMapper">
+  <resultMap id="BaseResultMap" type="com.atsun.dormitory.po.Log">
+    <!--@mbg.generated-->
+    <!--@Table log-->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="operate_tim" jdbcType="TIMESTAMP" property="operateTim" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="clas" jdbcType="VARCHAR" property="clas" />
+    <result column="method" jdbcType="VARCHAR" property="method" />
+    <result column="ip" jdbcType="VARCHAR" property="ip" />
+    <result column="param" jdbcType="VARCHAR" property="param" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="result" jdbcType="VARCHAR" property="result" />
+  </resultMap>
+  <resultMap id="baseMap" type="com.atsun.dormitory.vo.LogVO">
+    <id column="id" property="id"/>
+    <result column="operate_tim" property="operateTim"/>
+    <result column="clas" property="clas"/>
+    <result column="method" property="method"/>
+    <result column="ip" property="ip"/>
+    <result column="param" property="param"/>
+    <result column="url" property="url"/>
+    <result column="description" property="description"/>
+    <result column="result" property="result"/>
+    <association property="user" javaType="com.atsun.dormitory.po.User">
+      <id property="id" column="u_id"/>
+      <result column="name" property="name"/>
+      <result column="cellphone" property="cellphone"/>
+      <result column="email" property="email"/>
+      <result column="icon" property="icon"/>
+    </association>
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, operate_tim, user_id, clas, `method`, ip, param, url, description, `result`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from log
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <!--@mbg.generated-->
+    delete from log
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.atsun.dormitory.po.Log">
+    <!--@mbg.generated-->
+    insert into log (id, operate_tim, user_id, 
+      clas, `method`, ip, param, 
+      url, description, `result`
+      )
+    values (#{id,jdbcType=VARCHAR}, #{operateTim,jdbcType=TIMESTAMP}, #{userId,jdbcType=VARCHAR}, 
+      #{clas,jdbcType=VARCHAR}, #{method,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}, #{param,jdbcType=VARCHAR}, 
+      #{url,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{result,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.atsun.dormitory.po.Log">
+    <!--@mbg.generated-->
+    insert into log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="operateTim != null">
+        operate_tim,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="clas != null">
+        clas,
+      </if>
+      <if test="method != null">
+        `method`,
+      </if>
+      <if test="ip != null">
+        ip,
+      </if>
+      <if test="param != null">
+        param,
+      </if>
+      <if test="url != null">
+        url,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="result != null">
+        `result`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="operateTim != null">
+        #{operateTim,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="clas != null">
+        #{clas,jdbcType=VARCHAR},
+      </if>
+      <if test="method != null">
+        #{method,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null">
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="param != null">
+        #{param,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="result != null">
+        #{result,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.atsun.dormitory.po.Log">
+    <!--@mbg.generated-->
+    update log
+    <set>
+      <if test="operateTim != null">
+        operate_tim = #{operateTim,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="clas != null">
+        clas = #{clas,jdbcType=VARCHAR},
+      </if>
+      <if test="method != null">
+        `method` = #{method,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null">
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="param != null">
+        param = #{param,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="result != null">
+        `result` = #{result,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.atsun.dormitory.po.Log">
+    <!--@mbg.generated-->
+    update log
+    set operate_tim = #{operateTim,jdbcType=TIMESTAMP},
+      user_id = #{userId,jdbcType=VARCHAR},
+      clas = #{clas,jdbcType=VARCHAR},
+      `method` = #{method,jdbcType=VARCHAR},
+      ip = #{ip,jdbcType=VARCHAR},
+      param = #{param,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      `result` = #{result,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+    <select id="list" resultMap="baseMap">
+      SELECT o.id AS id, o.operate_tim AS operate_tim , o.user_id AS userId, o.clas AS clas, o.method AS method,
+             o.ip AS ip, o.param AS param, o.url AS url, o.description AS description, o.result AS result,su.id as u_id,
+            name, cellphone, email, icon FROM log o
+             left join user su on o.user_id = su.id
+      <where>
+        <if test="clas != null and clas != ''">
+          instr(clas,#{clas})
+        </if>
+        <if test="method != null and method != ''">
+          and instr(method,#{method})
+        </if>
+        <if test="ip != null and ip != ''">
+          and instr(ip,#{ip})
+        </if>
+        <if test="userId != null and userId != ''">
+          and user_id = #{userId}
+        </if>
+        <if test="url != null and url != ''">
+          and instr(url,#{url})
+        </if>
+        <if test="operateTimeStart != null and operateTimeEnd != null">
+          and operate_tim between #{operateTimeStart} and #{operateTimeEnd}
+        </if>
+        <if test="operateTimeStart != null and operateTimeEnd == null">
+          and operate_tim &gt; #{operateTimeStart}
+        </if>
+        <if test="operateTimeStart == null and operateTimeEnd != null">
+          and operate_tim &lt; #{operateTimeEnd}
+        </if>
+      </where>
+      ORDER BY o.operate_tim desc
+    </select>
+  <select id="count" resultType="int">
+    SELECT COUNT(*) FROM log
+  </select>
+  <select id="query" resultMap="baseMap">
+    select sl.id as id,
+    operate_tim,
+    user_id,
+    clas,
+    method,
+    ip,
+    param,
+    url,
+    description,
+    result,
+    su.id as u_id,
+    name,
+    cellphone,
+    email,
+    icon
+    from log sl
+    left join user su on sl.user_id = su.id
+    where sl.id = #{id}
+  </select>
+    <delete id="deleteByUserId">
+      delete from log where user_id=#{userId,jdbcType=VARCHAR}
+    </delete>
+</mapper>

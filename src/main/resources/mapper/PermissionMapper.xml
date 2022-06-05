@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atsun.dormitory.dao.PermissionMapper">
+    <resultMap id="BaseResultMap" type="com.atsun.dormitory.po.Permission">
+        <!--@mbg.generated-->
+        <!--@Table permission-->
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="pid" jdbcType="VARCHAR" property="pid"/>
+        <result column="order_num" jdbcType="INTEGER" property="orderNum"/>
+        <result column="path" jdbcType="VARCHAR" property="path"/>
+        <result column="component" jdbcType="VARCHAR" property="component"/>
+        <result column="type" jdbcType="VARCHAR" property="type"/>
+        <result column="sn" jdbcType="VARCHAR" property="sn"/>
+        <result column="icon" jdbcType="VARCHAR" property="icon"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, `name`, pid, order_num, `path`, component, `type`, sn, icon, create_time, update_time
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from permission
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        <!--@mbg.generated-->
+        delete from permission
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.atsun.dormitory.po.Permission">
+        <!--@mbg.generated-->
+        insert into permission (id, `name`, pid,
+        order_num, `path`, component,
+        `type`, sn, icon, create_time,
+        update_time)
+        values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{pid,jdbcType=VARCHAR},
+        #{orderNum,jdbcType=INTEGER}, #{path,jdbcType=VARCHAR}, #{component,jdbcType=VARCHAR},
+        #{type,jdbcType=VARCHAR}, #{sn,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+        #{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" parameterType="com.atsun.dormitory.po.Permission">
+        <!--@mbg.generated-->
+        insert into permission
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="name != null">
+                `name`,
+            </if>
+            <if test="pid != null">
+                pid,
+            </if>
+            <if test="orderNum != null">
+                order_num,
+            </if>
+            <if test="path != null">
+                `path`,
+            </if>
+            <if test="component != null">
+                component,
+            </if>
+            <if test="type != null">
+                `type`,
+            </if>
+            <if test="sn != null">
+                sn,
+            </if>
+            <if test="icon != null">
+                icon,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="pid != null">
+                #{pid,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                #{orderNum,jdbcType=INTEGER},
+            </if>
+            <if test="path != null">
+                #{path,jdbcType=VARCHAR},
+            </if>
+            <if test="component != null">
+                #{component,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="sn != null">
+                #{sn,jdbcType=VARCHAR},
+            </if>
+            <if test="icon != null">
+                #{icon,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.atsun.dormitory.po.Permission">
+        <!--@mbg.generated-->
+        update permission
+        <set>
+            <if test="name != null">
+                `name` = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="pid != null">
+                pid = #{pid,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                order_num = #{orderNum,jdbcType=INTEGER},
+            </if>
+            <if test="path != null">
+                `path` = #{path,jdbcType=VARCHAR},
+            </if>
+            <if test="component != null">
+                component = #{component,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                `type` = #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="sn != null">
+                sn = #{sn,jdbcType=VARCHAR},
+            </if>
+            <if test="icon != null">
+                icon = #{icon,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.atsun.dormitory.po.Permission">
+        <!--@mbg.generated-->
+        update permission
+        set `name` = #{name,jdbcType=VARCHAR},
+        pid = #{pid,jdbcType=VARCHAR},
+        order_num = #{orderNum,jdbcType=INTEGER},
+        `path` = #{path,jdbcType=VARCHAR},
+        component = #{component,jdbcType=VARCHAR},
+        `type` = #{type,jdbcType=VARCHAR},
+        sn = #{sn,jdbcType=VARCHAR},
+        icon = #{icon,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        update_time = #{updateTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <select id="findMenu" resultMap="BaseResultMap">
+        SELECT * FROM permission o
+        <where>
+            <foreach collection="permissionIds" item="permissionId" open="id IN(" separator="," close=")">
+                #{permissionId,jdbcType=VARCHAR}
+            </foreach>
+            and o.type !='F'
+        </where>
+    </select>
+    <select id="findPermiss" resultType="java.lang.String">
+        SELECT o.sn FROM permission o
+        <where>
+            <foreach collection="permissionIds" item="permissionId" open="id IN(" separator="," close=")">
+                #{permissionId,jdbcType=VARCHAR}
+            </foreach>
+            and o.sn is not null
+        </where>
+    </select>
+    <select id="find" resultType="com.atsun.dormitory.vo.PermissionVO">
+        SELECT o.id          AS id,
+               o.name        AS name,
+               o.pid         AS pid,
+               o.order_num   AS orderNum,
+               o.path        AS path,
+               o.component   AS component,
+               o.type        AS type,
+               o.sn          AS sn,
+               o.icon        AS icon,
+               o.create_time AS createTime,
+               O.update_time AS updateTime
+        FROM permission o
+        WHERE 1 = 1
+        ORDER BY order_num ASC
+    </select>
+    <select id="findChildIdS" resultMap="BaseResultMap">
+        SELECT * FROM permission o WHERE pid=#{permissionId,jdbcType=VARCHAR}
+    </select>
+</mapper>
